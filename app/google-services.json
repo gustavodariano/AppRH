@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1035629625337",
+    "project_id": "appponto-317311",
+    "storage_bucket": "appponto-317311.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035629625337:android:0f12522655c0de162cc728",
+        "android_client_info": {
+          "package_name": "projetofinal.gustavodariano.apprhponto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035629625337-tl822rl8t50bqfj3qengmtamimsq8snt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzlju3rbGuFxckYMgoC3m5QE5nxvyXXHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035629625337-tl822rl8t50bqfj3qengmtamimsq8snt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
