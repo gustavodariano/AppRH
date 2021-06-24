@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,18 +16,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 
 public class MainActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
-    private TextView etInfo;
     private Button btnLogin;
-    private TextView etUserRegister;
+    private Button btnUserRegister;
 
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -42,42 +35,33 @@ public class MainActivity extends AppCompatActivity {
 
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
+        btnUserRegister = (Button) findViewById(R.id.btnUserRegister);
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        etUserRegister = (TextView) findViewById(R.id.tvCadastro);
 
         auth = FirebaseAuth.getInstance();
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = auth.getCurrentUser();
-                if( user != null ){
-                    Intent intent = new Intent(MainActivity.this, ListActivity.class);
-                    startActivity( intent );
-                }else {
-                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
 
-                }
-            }
-        };
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnUserRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                validate(etEmail.getText().toString(), etPassword.getText().toString());
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                startActivity( intent );
             }
         });
 
-        etUserRegister.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
+            public void onClick(View v) {
+                logar();
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                startActivity( intent );
             }
         });
 
     }
 
-    private void login() {
+    private void logar(){
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
@@ -87,34 +71,13 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if( ! task.isSuccessful() ){
-                                Toast.makeText( MainActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
+                                Toast.makeText( MainActivity.this, "Login ok", Toast.LENGTH_LONG).show();
                                 etPassword.setBackgroundColor(Color.argb(127, 255, 0, 0 ));
                             }
                         }
                     });
         }
-
     }
-
-    private void validate(String userEmail, String userPassword) {
-        auth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                    startActivity( intent );
-
-                }else{
-                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-    }
-
-
 
 }
 
