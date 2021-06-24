@@ -1,18 +1,18 @@
 package projetofinal.gustavodariano.apprhponto;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Switch;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
@@ -27,23 +27,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
-    private ListView lvLista;
-    private List<UserProfile> userList;
+    private ListView lvList;
+    private List<UserInfo> infoUser;
+    private Button btnBackForm;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
     private Query query;
-    private ArrayAdapter<UserProfile> adapter;
+    private ArrayAdapter<UserInfo> adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        FloatingActionButton btnback = findViewById(R.id.backtoForm);
-        btnback.setOnClickListener(new View.OnClickListener() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton btn = findViewById(R.id.btnBacktoForm);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ListActivity.this, SecondActivity.class);
@@ -51,13 +53,13 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-        lvLista = findViewById( R.id.lvLista );
-        userList = new ArrayList<>();
-        adapter = new ArrayAdapter<UserProfile>(
-                ListActivity.this, android.R.layout.simple_list_item_1, userList);
-        lvLista.setAdapter( adapter );
+        lvList = findViewById( R.id.lvList );
+        infoUser = new ArrayList<>();
+        adapter = new ArrayAdapter<UserInfo>(
+                ListActivity.this, android.R.layout.simple_list_item_1, infoUser);
+        lvList.setAdapter( adapter );
 
-        lvLista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        lvList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 remove( position );
@@ -67,19 +69,21 @@ public class ListActivity extends AppCompatActivity {
 
     }
 
-    private void remove(final int position) {
-        final UserProfile selectUser = userList.get( position );
+    private void remove(final int posicao){
+
+        final UserInfo userInfo = infoUser.get( posicao );
 
         AlertDialog.Builder alerta = new AlertDialog.Builder(ListActivity.this);
-        alerta.setTitle("Excluir Ponto");
+        alerta.setTitle("Remove employee");
         alerta.setIcon( android.R.drawable.ic_delete );
-        alerta.setNeutralButton("Cancelar", null);
-        alerta.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+        alerta.setMessage("Confirm delete employee" + userInfo.Name + "?");
+        alerta.setNeutralButton("Cancel", null);
+        alerta.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                reference.child("userprofile").child( selectUser.userId ).removeValue();
+                reference.child("employeeinfo").child( userInfo.ID ).removeValue();
 
-                userList.remove( position );
+                infoUser.remove( posicao );
                 adapter.notifyDataSetChanged();
             }
         });
@@ -88,24 +92,27 @@ public class ListActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onStart() {
         super.onStart();
 
-        //userList.clear();
+        infoUser.clear();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
-        query = reference.child("userprofile").orderByChild("name");
+        query = reference.child("employeeinfo").orderByChild("Name");
 
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                UserProfile up = new UserProfile();
-                up.userName = dataSnapshot.child("userName").getValue(String.class);
-                up.userEmail = dataSnapshot.child("userEmail").getValue(String.class);
+                UserInfo ui = new UserInfo();
+                ui.ID = dataSnapshot.getKey();
+                ui.Name = dataSnapshot.child("Name").getValue(String.class);
+                ui.Email = dataSnapshot.child("Email").getValue(String.class);
+                ui.Age = dataSnapshot.child("Age").getValue(String.class);
+                ui.Wage = dataSnapshot.child("Wage").getValue(Double.class);
 
-
-                userList.add( up );
+                infoUser.add( ui );
 
                 adapter.notifyDataSetChanged();
 
@@ -143,7 +150,6 @@ public class ListActivity extends AppCompatActivity {
 
         query.removeEventListener( childEventListener );
     }
-
 }
 
 
