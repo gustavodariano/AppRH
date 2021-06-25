@@ -1,6 +1,4 @@
-AppRH
-
-AppRH STEPS https://console.firebase.google.com/project/apprh-gustavodariano/firestore?hl=pt-br
+AppRH STEPS
 
 Comece adicionando o Firebase ao seu aplicativo https://console.firebase.google.com/project/apprh-gustavodariano/overview?hl=pt-br&nonce=1624548464652 https://firebase.google.com/docs/android/setup?authuser=0
 
