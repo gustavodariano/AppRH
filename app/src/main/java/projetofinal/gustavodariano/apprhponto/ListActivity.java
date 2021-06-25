@@ -44,15 +44,15 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        FloatingActionButton fab = findViewById(R.id.fabBacktoForm);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button btnbacktoMenu = findViewById(R.id.btnBacktoSecond);
+        btnbacktoMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(ListActivity.this, SecondActivity.class);
                 startActivity(intent);
             }
         });
+
         lvList = findViewById( R.id.lvShowList );
         employeeInfo = new ArrayList<>();
         adapter = new ArrayAdapter<Employee>(

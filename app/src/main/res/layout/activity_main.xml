@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#AFAEAE"
     tools:context=".MainActivity">
 
 
@@ -44,6 +45,7 @@
         android:layout_marginTop="20dp"
         android:hint="Login"
         android:text="Login"
+        android:backgroundTint="#AFAEAE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -58,6 +60,7 @@
         android:layout_marginTop="20dp"
         android:hint="Register"
         android:text="Register"
+        android:backgroundTint="#AFAEAE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

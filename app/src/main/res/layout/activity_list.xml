@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListActivity" >
+    android:background="#AFAEAE"
+    tools:context=".ListActivity">
 
     <include layout="@layout/content_list" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabBacktoForm"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnBacktoSecond"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:backgroundTint="#00f"
-        android:tint="#fff"
-        app:srcCompat="@android:drawable/btn_dropdown" />
+        android:autoSizeTextType="uniform"
+        android:backgroundTint="#AFAEAE"
+        android:text="Return to menu"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="12sp" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
