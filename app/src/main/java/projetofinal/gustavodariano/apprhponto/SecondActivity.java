@@ -15,15 +15,13 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SecondActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etEmail;
-    //private EditText etAge;
-    //private EditText etWage;
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
     private Button btnSave;
     private Button btnShowList;
-
+    private Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +35,7 @@ public class SecondActivity extends AppCompatActivity {
 
         btnSave = findViewById(R.id.btnSave);
         btnShowList = findViewById(R.id.btnShowList);
+        btnLogout = findViewById(R.id.btnLogout);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +49,14 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SecondActivity.this, ListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SecondActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

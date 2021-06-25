@@ -3,6 +3,7 @@ package projetofinal.gustavodariano.apprhponto;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,7 +32,6 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
     private ListView lvList;
     private List<Employee> employeeInfo;
-    private Button btnBackForm;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
@@ -44,10 +44,8 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        employeeInfo = new ArrayList<>();
+        FloatingActionButton fab = findViewById(R.id.fabBacktoForm);
 
-
-        FloatingActionButton fab = findViewById(R.id.btnBacktoForm);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,10 +53,66 @@ public class ListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        lvList = findViewById( R.id.lvShowList );
+        employeeInfo = new ArrayList<>();
+        adapter = new ArrayAdapter<Employee>(
+                ListActivity.this, android.R.layout.simple_list_item_1, employeeInfo);
+        lvList.setAdapter( adapter );
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        employeeInfo.clear();
 
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference();
+        query = reference.child("employeeinfo").orderByChild("Name");
+
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Employee e = new Employee();
+                e.Name = dataSnapshot.child("Name").getValue(String.class);
+                e.Email = dataSnapshot.child("Email").getValue(String.class);
+
+                employeeInfo.add(e);
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        query.addChildEventListener( childEventListener );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        query.removeEventListener( childEventListener );
+
+    }
 }
 
 
